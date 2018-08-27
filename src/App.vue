@@ -2,10 +2,11 @@
   
   <div class="corpo">
     <h1 class="centralizado">{{ titulo }}</h1>
+    <input type="search" @input="filtro = $event.target.value" class="filtro" placeholder="Digite o titulo da imagem:">
     <ul class="lista-fotos">
-      <li class="lista-fotos-item" v-for="foto of fotos">
+      <li class="lista-fotos-item" v-for="foto of fotosComFiltro">
         <Panel :titulo="foto.titulo">
-          <img class="imagem-responsiva" :src="foto.url" :alt="foto.titulo">
+          <ResponsiveImage :titulo="foto.titulo" :url="foto.url" />
         </Panel>
       </li>
     </ul>
@@ -14,14 +15,28 @@
 
 <script scoped>
 import Panel from './components/shared/panel/Panel.vue';
+import ResponsiveImage from './components/shared/responsive-image/ResponsiveImage.vue'
+
 export default {
   components: {
-    Panel: Panel
+    Panel: Panel,
+    ResponsiveImage: ResponsiveImage
   },
   data () {
     return {
       titulo: 'Alurapic',
-      fotos: []
+      fotos: [],
+      filtro: ""
+    }
+  },
+  computed: {
+    fotosComFiltro() {
+      if(this.filtro) {
+        let regex = new RegExp(this.filtro.trim(), 'i');
+        return this.fotos.filter(foto => regex.test(foto.titulo));
+      }
+
+      return this.fotos;
     }
   },
   async created() {
@@ -50,8 +65,11 @@ export default {
   display: inline-block;
 }
 
-.imagem-responsiva {
-    width: 100%;
-  }
+
+
+.filtro {
+  display: block;
+  width: 100%;
+}
 
 </style>

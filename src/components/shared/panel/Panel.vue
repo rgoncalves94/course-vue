@@ -1,19 +1,27 @@
 <template>
     <div class="painel">
-        <h2 class="painel-titulo">{{ titulo }}</h2>
+        <h2 class="painel-titulo" @dblclick="visivel = !visivel">{{ titulo }}</h2>
         <!--
             Pode-se ter mais de um slot em um componente se utilizar da seguinte forma:
             <slot class="painel-conteudo"></slot> //slot padrão
             <slot name="rodape" class="painel-conteudo"></slot> //slot nomeado: utilizar slot="rodape" no elemento pai para funcionar;
         -->
-        <slot class="painel-conteudo">
-        </slot>
+        <transition name="painel-fade">
+            <div class="painel-conteudo" v-show="visivel">
+                <slot></slot>
+            </div>
+        </transition>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['titulo']
+    props: ['titulo'],
+    data() {
+        return {
+            visivel: true
+        }
+    }
 }
 </script>
 
@@ -40,5 +48,13 @@ export default {
     padding: 10px;
     text-transform: uppercase;
   }
+
+  .painel-fade-enter, .painel-fade-leave-active {
+      opacity: 0;
+  }
+  .painel-fade-enter-active, .painel-fade-leave-active {
+      transition: opacity .4s;
+  }
+  
 
 </style>
