@@ -1,59 +1,57 @@
 <template>
-  <div>
-    <h1>{{ titulo }}</h1>
-    <ul>
-      <li v-for="foto of fotos">
-        <img :src="foto.url" :alt="foto.titulo">
+  
+  <div class="corpo">
+    <h1 class="centralizado">{{ titulo }}</h1>
+    <ul class="lista-fotos">
+      <li class="lista-fotos-item" v-for="foto of fotos">
+        <Panel :titulo="foto.titulo">
+          <img class="imagem-responsiva" :src="foto.url" :alt="foto.titulo">
+        </Panel>
       </li>
     </ul>
   </div>
 </template>
 
-<script>
+<script scoped>
+import Panel from './components/shared/panel/Panel.vue';
 export default {
+  components: {
+    Panel: Panel
+  },
   data () {
     return {
       titulo: 'Alurapic',
-      fotos: [
-        {
-          url: './assets/dog2.jpg',
-          titulo: 'Cachorro',
-        },
-        {
-          url: './assets/dog1.png',
-          titulo: 'Varios cachorros',
-        }
-      ]
+      fotos: []
     }
+  },
+  async created() {
+    let response  = await this.$http.get('http://localhost:3000/v1/fotos');
+    this.fotos = await response.json();
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.corpo {
+  font-family: Helvetica, sans-serif;
+  width: 96%;
+  margin-top: 0 auto;
+}
+
+.centralizado {
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 
-h1, h2 {
-  font-weight: normal;
+.lista-fotos {
+  list-style: none;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
+.lista-fotos .lista-fotos-item {
   display: inline-block;
-  margin: 0 10px;
 }
 
-a {
-  color: #42b983;
-}
+.imagem-responsiva {
+    width: 100%;
+  }
+
 </style>
