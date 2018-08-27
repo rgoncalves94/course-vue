@@ -6,6 +6,7 @@
       <li class="lista-fotos-item" v-for="foto of fotosComFiltro">
         <Panel :titulo="foto.titulo">
           <ResponsiveImage :titulo="foto.titulo" :url="foto.url" />
+          <Button type="button" label="Remover" @buttonClick="remove(foto)" :confirm="true" buttonStyle="danger" />
         </Panel>
       </li>
     </ul>
@@ -15,17 +16,24 @@
 <script scoped>
 import Panel from '../shared/panel/Panel.vue';
 import ResponsiveImage from '../shared/responsive-image/ResponsiveImage.vue'
+import Button from '../shared/button/Button.vue'
 
 export default {
   components: {
-    Panel: Panel,
-    ResponsiveImage: ResponsiveImage
+    Panel,
+    ResponsiveImage,
+    Button
   },
   data () {
     return {
       titulo: 'Alurapic',
       fotos: [],
       filtro: ""
+    }
+  },
+  methods: {
+    remove(foto) {
+      alert(`'${foto.titulo}' removido(a) com sucesso.`);
     }
   },
   computed: {
