@@ -5,7 +5,7 @@
     <ul class="lista-fotos">
       <li class="lista-fotos-item" v-for="foto of fotosComFiltro">
         <Panel :titulo="foto.titulo">
-          <ResponsiveImage :titulo="foto.titulo" :url="foto.url" />
+          <ResponsiveImage v-transform:rotate.animate :titulo="foto.titulo" :url="foto.url" />
           <Button type="button" label="Remover" @buttonClick="remove(foto)" :confirm="true" buttonStyle="danger" />
         </Panel>
       </li>
@@ -17,12 +17,16 @@
 import Panel from '../shared/panel/Panel.vue';
 import ResponsiveImage from '../shared/responsive-image/ResponsiveImage.vue'
 import Button from '../shared/button/Button.vue'
+import Transform from '../../directives/Transform'
 
 export default {
   components: {
     Panel,
     ResponsiveImage,
     Button
+  },
+  directives: {
+    transform: Transform
   },
   data () {
     return {
